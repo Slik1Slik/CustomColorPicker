@@ -16,7 +16,7 @@
 		561CE6D3280EC55A0024533B /* UIColor + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CE6D2280EC55A0024533B /* UIColor + Extensions.swift */; };
 		561CE6D5280EC5620024533B /* Color + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CE6D4280EC5620024533B /* Color + Extensions.swift */; };
 		561CE6D8280EC5C90024533B /* HSBAComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CE6D7280EC5C90024533B /* HSBAComponents.swift */; };
-		561CE6DA280EC5E00024533B /* RGBComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CE6D9280EC5E00024533B /* RGBComponents.swift */; };
+		561CE6DA280EC5E00024533B /* RGBAComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CE6D9280EC5E00024533B /* RGBAComponents.swift */; };
 		561CE6DE280EC8FD0024533B /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CE6DD280EC8FD0024533B /* Grid.swift */; };
 		56F5250D280956B600D3F4E8 /* CarouselPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F5250C280956B600D3F4E8 /* CarouselPicker.swift */; };
 /* End PBXBuildFile section */
@@ -32,7 +32,7 @@
 		561CE6D2280EC55A0024533B /* UIColor + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extensions.swift"; sourceTree = "<group>"; };
 		561CE6D4280EC5620024533B /* Color + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color + Extensions.swift"; sourceTree = "<group>"; };
 		561CE6D7280EC5C90024533B /* HSBAComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSBAComponents.swift; sourceTree = "<group>"; };
-		561CE6D9280EC5E00024533B /* RGBComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBComponents.swift; sourceTree = "<group>"; };
+		561CE6D9280EC5E00024533B /* RGBAComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBAComponents.swift; sourceTree = "<group>"; };
 		561CE6DD280EC8FD0024533B /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		56F5250C280956B600D3F4E8 /* CarouselPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,7 +69,7 @@
 			children = (
 				561573D028083854001D28BD /* CustomColorPickerApp.swift */,
 				561573D228083854001D28BD /* ContentView.swift */,
-				561573DE28083892001D28BD /* CustomColorPicker.swift */,
+				561CE6DF280EF1A90024533B /* View */,
 				561CE6D6280EC59B0024533B /* Color Components */,
 				561CE6D1280EC5420024533B /* Extensions */,
 				561CE6DB280EC8030024533B /* Helpers */,
@@ -101,7 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				561CE6D7280EC5C90024533B /* HSBAComponents.swift */,
-				561CE6D9280EC5E00024533B /* RGBComponents.swift */,
+				561CE6D9280EC5E00024533B /* RGBAComponents.swift */,
 			);
 			path = "Color Components";
 			sourceTree = "<group>";
@@ -121,6 +121,14 @@
 				561CE6DD280EC8FD0024533B /* Grid.swift */,
 			);
 			path = "Reusable Views";
+			sourceTree = "<group>";
+		};
+		561CE6DF280EF1A90024533B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				561573DE28083892001D28BD /* CustomColorPicker.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,7 +208,7 @@
 				561CE6D8280EC5C90024533B /* HSBAComponents.swift in Sources */,
 				561573D128083854001D28BD /* CustomColorPickerApp.swift in Sources */,
 				561CE6D5280EC5620024533B /* Color + Extensions.swift in Sources */,
-				561CE6DA280EC5E00024533B /* RGBComponents.swift in Sources */,
+				561CE6DA280EC5E00024533B /* RGBAComponents.swift in Sources */,
 				561573DF28083892001D28BD /* CustomColorPicker.swift in Sources */,
 				56F5250D280956B600D3F4E8 /* CarouselPicker.swift in Sources */,
 			);

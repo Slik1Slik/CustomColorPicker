@@ -34,22 +34,18 @@ struct CustomColorPicker: View {
     
     var body: some View {
         VStack(spacing: 15) {
-            baseColorsPicker
-                .padding(.horizontal, -16)
+            baseColorPicker
             Divider()
             sliders
             HStack(spacing: 0) {
                 selectedColorLabel
-                    .padding(.trailing, 16)
                 VStack(spacing: 10) {
                     recentColorsControlBar
-                    recentColorsPicker
-                        .padding(.trailing, -16)
+                    recentColorPicker
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: 85, alignment: .leading)
         }
-        .padding()
         .onChange(of: selectedColorBrightness) { newValue in
             updateSelectedColor()
         }
@@ -60,7 +56,8 @@ struct CustomColorPicker: View {
     
     private func updateSelectedColor() {
         let hsv = selectedColor.uiColor.hsbaComponents
-        selectedColor = Color(hue: hsv.hue, saturation: hsv.saturation, brightness: selectedColorBrightness, opacity: selectedColorOpacity)
+        let brightness = supportsBrightness ? selectedColorBrightness : hsv.brightness
+        selectedColor = Color(hue: hsv.hue, saturation: hsv.saturation, brightness: brightness, opacity: selectedColorOpacity)
     }
     
     private func updateHSBAValues() {
@@ -72,7 +69,7 @@ struct CustomColorPicker: View {
         selectedBaseColor = .clear
     }
     
-    private var colors: [Color] = [
+    private var baseColors: [Color] = [
         .init(red: 1, green: 0, blue: 0),                   //red
         .init(red: 1, green: 128/255, blue: 0),             //orange
         .init(red: 1, green: 1, blue: 0),                   //yellow
@@ -90,12 +87,12 @@ struct CustomColorPicker: View {
 extension CustomColorPicker {
     
     @ViewBuilder
-    private var baseColorsPicker: some View {
+    private var baseColorPicker: some View {
         switch pickerStyle {
         case .grid:
             colorsGrid
         case .carousel:
-            CarouselPicker(selection: $selectedBaseColor, values: colors) { value in
+            CarouselPicker(selection: $selectedBaseColor, values: baseColors) { value in
                 (value as Color)
                     .clipShape(Circle())
                     .frame(width: 35, height: 35)
@@ -104,7 +101,8 @@ extension CustomColorPicker {
                     )
             } onSelect: { value in
                 let hsba = value.uiColor.hsbaComponents
-                selectedColor = Color(hue: hsba.hue, saturation: hsba.saturation, brightness: selectedColorBrightness, opacity: selectedColorOpacity)
+                let brightness = supportsBrightness ? selectedColorBrightness : hsba.brightness
+                selectedColor = Color(hue: hsba.hue, saturation: hsba.saturation, brightness: brightness, opacity: selectedColorOpacity)
             }
         }
     }
@@ -187,13 +185,13 @@ extension CustomColorPicker {
         }
     }
     
-    private var recentColorsPicker: some View {
+    private var recentColorPicker: some View {
         CarouselPicker(selection: $selectedColor, values: recentColors) { value in
             (value as Color)
                 .clipShape(Circle())
                 .frame(width: 35, height: 35)
-                .background(colorBackground.clipShape(Circle()))
                 .overlay(selectedColorMark(isSelected: selectedColor == value))
+                .background(colorBackground.clipShape(Circle()))
         } onSelect: { value in
             updateHSBAValues()
             dropSelectedBaseColor()
@@ -215,15 +213,13 @@ extension CustomColorPicker {
         case .grid:
             Grid(hasBorder: false)
         case .gradient:
-            GeometryReader { proxy in
-                LinearGradient(
-                    gradient: Gradient(stops: [
-                        Gradient.Stop(color: .black, location: 0.5),
-                        Gradient.Stop(color: .white, location: 0.5)
-                    ]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing)
-            }
+            LinearGradient(
+                gradient: Gradient(stops: [
+                    Gradient.Stop(color: .black, location: 0.5),
+                    Gradient.Stop(color: .white, location: 0.5)
+                ]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing)
         }
     }
 }
@@ -242,11 +238,13 @@ extension CustomColorPicker {
                     .overlay(
                         Rectangle()
                             .stroke(color.isDark ? .white : .black.opacity(0.7),
-                                    lineWidth: selectedColor == color ? 2 : 0)
+                                    lineWidth:  (selectedColor == color || selectedBaseColor == color) ? 2 : 0)
                     )
                     .onTapGesture {
-                        selectedColor = color
-                        updateHSBAValues()
+                        let hsba = color.uiColor.hsbaComponents
+                        let brightness = supportsBrightness ? selectedColorBrightness : hsba.brightness
+                        selectedColor = Color(hue: hsba.hue, saturation: hsba.saturation, brightness: brightness, opacity: selectedColorOpacity)
+                        selectedBaseColor = color
                     }
             }
         }
@@ -264,21 +262,22 @@ extension CustomColorPicker {
     
     private var colorsForGrid: [Color] {
         var resultArray: [Color] = []
-        let increments = increments
-        let rgbaComponents = colors.map { color in
+        let increments = incrementsForRGBAComponents
+        let rgbaComponents = baseColors.map { color in
             color.uiColor.rgbaComponents
         }
-        for index in 0..<colors.count {
+        for index in 0..<baseColors.count {
             resultArray.append(contentsOf: ColorGenerator.generateColors(rgbaComponents[index],
                                                                          rIncrement: increments[index].0/255,
                                                                          gIncrement: increments[index].1/255,
                                                                          bIncrement: increments[index].2/255,
                                                                          count: 4))
         }
+        
         return resultArray
     }
     
-    private var increments: [(Double, Double, Double)] {
+    private var incrementsForRGBAComponents: [(Double, Double, Double)] {
         return [
             (0, 51, 51), //red
             (0, 25, 51), //orange
@@ -290,11 +289,11 @@ extension CustomColorPicker {
             (25, 51, 0), //violet
             (0, 51, 0),  //fuchsia
             (0, 51, 25), //pink
-            (32, 32, 32) //gray
+            (33, 33, 33) //gray
         ]
     }
 }
-
+//MARK: PickerStyle and ColorLabelBackground
 extension CustomColorPicker {
     
     enum PickerStyle {
@@ -307,7 +306,7 @@ extension CustomColorPicker {
         case gradient
     }
 }
-
+//MARK: Initializers
 extension CustomColorPicker {
     
     init(selection: Binding<Color>,

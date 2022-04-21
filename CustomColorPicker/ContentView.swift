@@ -8,10 +8,35 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var color = Color.red
+    @State private var color: Color = .red
+    @State private var isColorToBeSelected: Bool = false
     var body: some View {
-        //ColorPicker("", selection: $color)
-        CustomColorPicker(selection: $color, pickerStyle: .grid, colorLabelBackground: .gradient)
+        VStack {
+            color
+                .frame(maxWidth: .infinity, maxHeight: 200)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .overlay(
+                    Text("Hi")
+                        .font(.largeTitle)
+                        .foregroundColor(color.isDark && !color.isTransparent ? .white : .black)
+                )
+            Button(isColorToBeSelected ? "Done" : "Select color") {
+                withAnimation {
+                    isColorToBeSelected.toggle()
+                }
+            }
+            if isColorToBeSelected {
+                CustomColorPicker(selection: $color)
+                    .padding()
+                    .background(
+                        Color.secondary.opacity(0.1)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    )
+                    .transition(.move(edge: .bottom))
+                    .padding()
+            }
+        }
+        .padding()
     }
 }
 

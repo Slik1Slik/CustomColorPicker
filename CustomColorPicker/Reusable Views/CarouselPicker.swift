@@ -14,11 +14,11 @@ struct CarouselPicker<SelectionValue: Hashable, Content: View>: View {
     
     var values: [SelectionValue] = []
     
+    var spacing: CGFloat = 5
+    
     var content: (SelectionValue) -> Content
     
     var onSelect: (SelectionValue) -> () = { _ in }
-    
-    var spacing: CGFloat = 5
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
