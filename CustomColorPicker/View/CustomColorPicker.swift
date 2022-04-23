@@ -25,12 +25,12 @@ struct CustomColorPicker: View {
     let pickerStyle: CustomColorPicker.PickerStyle
     let colorLabelBackground: CustomColorPicker.ColorLabelBackground
     
-    @State private var selectedColorBrightness: Double = 1
-    @State private var selectedColorOpacity: Double = 1
+    @State private var selectedColorBrightness: Double
+    @State private var selectedColorOpacity: Double
     
-    @State private var selectedBaseColor: Color = .clear
+    @State private var selectedBaseColor: Color
     
-    @State private var recentColors: [Color] = []
+    @State private var recentColors: [Color]
     
     var body: some View {
         VStack(spacing: 15) {
@@ -336,7 +336,12 @@ extension CustomColorPicker {
         self.pickerStyle = pickerStyle
         self.colorLabelBackground = colorLabelBackground
         
-        updateHSBAValues()
+        self.selectedColorBrightness = selection.wrappedValue.uiColor.hsbaComponents.brightness
+        self.selectedColorOpacity = selection.wrappedValue.uiColor.hsbaComponents.alpha
+        
+        self.selectedBaseColor = selection.wrappedValue
+        
+        self.recentColors = [selection.wrappedValue]
     }
 }
 
@@ -365,7 +370,12 @@ extension CustomColorPicker {
         self.pickerStyle = .carousel
         self.colorLabelBackground = .grid
         
-        updateHSBAValues()
+        self.selectedColorBrightness = selection.wrappedValue.uiColor.hsbaComponents.brightness
+        self.selectedColorOpacity = selection.wrappedValue.uiColor.hsbaComponents.alpha
+        
+        self.selectedBaseColor = selection.wrappedValue
+        
+        self.recentColors = [selection.wrappedValue]
     }
 }
 
@@ -391,7 +401,12 @@ extension CustomColorPicker {
         self.pickerStyle = .carousel
         self.colorLabelBackground = .grid
         
-        updateHSBAValues()
+        self.selectedColorBrightness = selection.wrappedValue.uiColor.hsbaComponents.brightness
+        self.selectedColorOpacity = selection.wrappedValue.uiColor.hsbaComponents.alpha
+        
+        self.selectedBaseColor = selection.wrappedValue
+        
+        self.recentColors = [selection.wrappedValue]
     }
 }
 
@@ -418,7 +433,12 @@ extension CustomColorPicker {
         self.pickerStyle = pickerStyle
         self.colorLabelBackground = colorLabelBackground
         
-        updateHSBAValues()
+        self.selectedColorBrightness = selection.wrappedValue.uiColor.hsbaComponents.brightness
+        self.selectedColorOpacity = selection.wrappedValue.uiColor.hsbaComponents.alpha
+        
+        self.selectedBaseColor = selection.wrappedValue
+        
+        self.recentColors = [selection.wrappedValue]
     }
 }
 
